@@ -7,7 +7,15 @@
 		<script type="text/javascript" src="/js/test.js"></script>
 	</head>
 	<body>
-		<canvas id="canvas"></canvas>
+		<canvas id="canvas" width="500" height="500" style="background: darkgreen;"></canvas>
+		
+		<button onclick="init();">Start</button>
+		
+		<button onclick="build();">Build</button>
+		
+		<button onclick="reset();">Stop</button>
+		
+		
 	</body>
 </html>
 <?php
