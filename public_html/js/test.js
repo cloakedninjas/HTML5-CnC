@@ -102,8 +102,7 @@ defn.mission = {
 				type: "enemy-all-destroyed",
 				player: 0
 			},
-			objects: [{defn: defn.unit.buggy, player: 0, x: 20, y: 20},
-			          {defn: defn.unit.mcv, player: 1, x: 200, y: 120}]
+			objects: [{defn: defn.structure.airfield, player: 0, x: 20, y: 20}]
 		}, {}
 	],
 
@@ -152,7 +151,17 @@ Game = {
 	},
 
 	start: function() {
+	    Ticker.useRAF = true;
+	    Ticker.setFPS(60);
+	    Ticker.addListener(this.tick);
+	    
 		this.loadMission("gdi", 0);
+	},
+	
+	end: function() {
+		this.stage.removeAllChildren();
+		Ticker.removeAllListeners();
+		this.stage.update();
 	},
 
 	loadMission: function(faction, level) {
@@ -168,6 +177,7 @@ Game = {
 
 			this.addObject(o);
 		}
+		
 		mission.init();
 	},
 
@@ -176,6 +186,7 @@ Game = {
 	 * @return null
 	 */
 	addObject: function(o) {
+		this.log("Adding " + o.defn.ref + " to collection");
 		this.objects.push(o);
 	},
 
@@ -189,14 +200,13 @@ Game = {
 	},
 
 	userCommand: function() {
-
 	},
 
 	tick: function() {
-		for (i = 0; i < this.objects.length; i++) {
-			this.objects[i].draw();
+		for (i = 0; i < Game.objects.length; i++) {
+			Game.objects[i].draw();
 		}
-		this.stage.update();
+		Game.stage.update();
 	}
 };
 
@@ -204,7 +214,6 @@ function GameObject(d) {
 	this.x = 0;
 	this.y = 0;
 	this.defn = d;
-	//Game.log(this.defn);
 
 	var spriteSheet = new SpriteSheet({
 		images: [Game.assets[d.ref]],
@@ -220,6 +229,11 @@ function GameObject(d) {
 
 	// erm
 	//stage.addChild(bmpAnimation);
+	
+	this.bmpAnim.x = 30;
+	this.bmpAnim.y = 90;
+	this.bmpAnim.gotoAndPlay("build");
+	Game.stage.addChild(this.bmpAnim);
 }
 
 GameObject.prototype.isVisible = function() {
@@ -229,16 +243,14 @@ GameObject.prototype.isVisible = function() {
 GameObject.prototype.draw = function() {
 	if (this.isVisible()) {
 		// get viewport coords
-		this.bmpAnim.x = 30;
-		this.bmpAnim.y = 90;
-		//bmpAnimation.gotoAndPlay("build");
-		Game.stage.addChild(this.bmpAnim);
+		
 	}
 };
 
 GameObject.prototype.changeAnimation = function(anim) {
 	this.bmpAnim.gotoAndPlay(anim);
 };
+
 
 
 //Game.userCommand({cmd: "build", what: "airfield"});

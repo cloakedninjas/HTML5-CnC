@@ -9,11 +9,11 @@
 	<body>
 		<canvas id="canvas" width="500" height="500" style="background: grey;"></canvas>
 
-		<button onclick="init();">Start</button>
+		<button onclick="Game.init();">Start</button>
 
 		<button onclick="build();">Build</button>
 
-		<button onclick="reset();">Stop</button>
+		<button onclick="Game.end();">Stop</button>
 
 
 	</body>
